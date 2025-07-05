@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HappyReal | Связь</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(ellipse at top left, #0f0f1a, #151528);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px;
+      animation: fadeIn 1.5s ease;
+      min-height: 100vh;
+    }
+    header {
+      text-align: center;
+      margin-top: 60px;
+      animation: slideDown 1s ease-out;
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    h1 {
+      font-size: 3rem;
+      color: #00f7ff;
+      text-shadow: 0 0 15px #00f7ff88;
+      margin: 0;
+    }
+    #lang-select {
+      background: #1e1e2e;
+      color: #00ffff;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 15px #00ffff88;
+      transition: background 0.3s;
+    }
+    #lang-select:hover {
+      background: #00ffff;
+      color: #000;
+    }
+    .contact {
+      margin: 40px 0 10px;
+      padding: 20px 30px;
+      background: #1e1e2e;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.1);
+      text-align: center;
+      animation: fadeInUp 1.5s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      max-width: 800px;
+      width: 100%;
+    }
+    .contact-title {
+      font-size: 1.6rem;
+      color: #00ffff;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .contact-row img {
+      width: 32px;
+      height: 32px;
+      filter: drop-shadow(0 0 5px #00ffff);
+    }
+    .contact-row a {
+      color: #00ffff;
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+    .socials-wrapper {
+      overflow-x: auto;
+      display: flex;
+      justify-content: start;
+      padding: 20px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      animation: fadeInUp 2s ease;
+      width: 100%;
+      max-width: 800px;
+    }
+    .socials-wrapper::-webkit-scrollbar {
+      height: 8px;
+    }
+    .socials-wrapper::-webkit-scrollbar-thumb {
+      background: #00ccccaa;
+      border-radius: 10px;
+    }
+    .socials {
+      display: flex;
+      gap: 30px;
+    }
+    .socials a {
+      position: relative;
+      flex: 0 0 auto;
+      scroll-snap-align: center;
+      width: 100px;
+      height: 130px;
+      background: #1e1e2e;
+      clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
+      transition: transform 0.3s ease;
+      overflow: hidden;
+    }
+    .socials a:hover {
+      transform: scale(1.1);
+    }
+    .socials a::before {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: -100%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 100%
+      );
+      transform: rotate(25deg);
+      animation: shine 6s infinite ease-in-out;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .socials img {
+      width: 48px;
+      height: 48px;
+      z-index: 1;
+    }
+    .faq {
+      max-width: 800px;
+      width: 100%;
+      background: #1e1e2e;
+      border-radius: 20px;
+      padding: 20px 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.1);
+      color: #00ffff;
+      animation: fadeInUp 1.5s ease;
+    }
+    .faq h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+    .faq-item {
+      margin-bottom: 15px;
+    }
+    .faq-question {
+      font-weight: bold;
+      cursor: pointer;
+      position: relative;
+      padding-right: 20px;
+    }
+    .faq-question::after {
+      content: "+";
+      position: absolute;
+      right: 0;
+      top: 0;
+      font-size: 1.5rem;
+      line-height: 1;
+      transition: transform 0.3s ease;
+    }
+    .faq-question.active::after {
+      content: "−";
+      transform: rotate(180deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      padding-left: 10px;
+      color: #66ffffcc;
+    }
+    .faq-answer.open {
+      max-height: 500px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      .contact {
+        padding: 15px;
+      }
+      .contact-title {
+        font-size: 1.4rem;
+      }
+      .socials a {
+        width: 80px;
+        height: 100px;
+      }
+      .socials img {
+        width: 36px;
+        height: 36px;
+      }
+      .faq {
+        padding: 15px 20px;
+      }
+      .faq h2 {
+        font-size: 1.5rem;
+      }
+    }
+    @keyframes shine {
+      0%, 92% {
+        transform: translate(-100%, -100%) rotate(25deg);
+      }
+      97%, 100% {
+        transform: translate(100%, 100%) rotate(25deg);
+      }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>HappyReal</h1>
+    <select id="lang-select" aria-label="Выбор языка">
+      <option value="ru" selected>Русский</option>
+      <option value="en">English</option>
+    </select>
+  </header>
+
+  <section class="contact">
+    <div class="contact-title" data-i18n="contactTitle">Связь</div>
+    <div class="contact-row">
+      <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" alt="Email">
+      <a id="email" href="mailto:hapyreal2@gmail.com">hapyreal2@gmail.com</a>
+    </div>
+  </section>
+
+  <div class="socials-wrapper">
+    <div class="socials">
+      <a href="https://t.me/HappyRealChanal" target="_blank" title="Telegram" aria-label="Telegram">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram">
+      </a>
+      <a href="https://discord.gg/38APa2cT" target="_blank" title="Discord" aria-label="Discord">
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord">
+      </a>
+      <a href="https://youtube.com/@happyreal-l7y?si=vSGxLh3Yb4VuOdNR" target="_blank" title="YouTube" aria-label="YouTube">
+        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
+      </a>
+    </div>
+  </div>
+
+  <section class="faq" aria-label="Часто задаваемые вопросы">
+    <h2 data-i18n="faqTitle">Часто задаваемые вопросы</h2>
+
+    <div class="faq-item">
+      <div class="faq-question">Ты быстро отвечаешь?</div>
+      <div class="faq-answer">Да, обычно стараюсь отвечать быстро, как только могу.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Как связаться с тобой?</div>
+      <div class="faq-answer">Пиши на почту  — всё есть на странице связи.</div>
+    </div>
+  </section>
+
+  <footer style="color: #00ffff; margin: 20px 40px 40px; font-size: 0.9rem; text-align: center; width: 100%; max-width: 800px;">
+    © 2025 HappyReal
+  </footer>
+
+  <script>
+    const translations = {
+      ru: {
+        contactTitle: "Связь",
+        faqTitle: "Часто задаваемые вопросы",
+      },
+      en: {
+        contactTitle: "Contact",
+        faqTitle: "Frequently Asked Questions",
+      }
+    };
+
+    const langSelect = document.getElementById("lang-select");
+    const contactTitle = document.querySelector("[data-i18n='contactTitle']");
+    const faqTitle = document.querySelector("[data-i18n='faqTitle']");
+
+    function setLanguage(lang) {
+      if (!translations[lang]) lang = 'ru';
+      contactTitle.textContent = translations[lang].contactTitle;
+      faqTitle.textContent = translations[lang].faqTitle;
+      currentLang = lang;
+    }
+
+    let currentLang = 'ru';
+
+    langSelect.addEventListener('change', () => {
+      setLanguage(langSelect.value);
+    });
+
+    setLanguage(currentLang);
+
+    // FAQ toggle
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const answer = q.nextElementSibling;
+        const isOpen = answer.classList.contains('open');
+        if (isOpen) {
+          answer.classList.remove('open');
+          q.classList.remove('active');
+        } else {
+          answer.classList.add('open');
+          q.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
